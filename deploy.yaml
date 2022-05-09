@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appforazure
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: AppForAzure
+  template:
+    metadata:
+      labels:
+        app: AppForAzure
+    spec:
+      containers:
+      - name: crsample
+        image: regsample.azurecr.io/crsample:latest
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: dsconfigsn
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: appforazure
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app:  AppForAzure
